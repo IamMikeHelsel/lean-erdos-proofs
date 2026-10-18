@@ -48,6 +48,8 @@ Horton sets), so that we get exactly `N` points.
 * `Horton.horton_euclidean`: the same in `EuclideanSpace ℝ (Fin 2)`.
 * `Horton.erdos_216_ge_seven`: for `k ≥ 7` there is no `n` such that every `n`-point set in
   general position has an empty convex `k`-gon.
+* `Horton.cardSet'_eq_empty`, `Horton.erdos_216'`: the statements of Erdős Problem 216 in the
+  form used by `google-deepmind/formal-conjectures` (PR #6775), with its definitions copied.
 
 Definitions (`InGeneralPosition`, `ConvexPosition`, `HasEmptyConvexKGon`) are stated with
 Mathlib's `Collinear`, `convexHull` and `interior`; they follow `EmptyHexagonLean`
@@ -867,5 +869,80 @@ theorem horton_euclidean (N : ℕ) : ∃ S : Finset (EuclideanSpace ℝ (Fin 2))
   · exact HasEmptyConvexKGon.of_map toEuclidean hS
 
 end Geometry
+
+/-! ### Bridge to the `formal-conjectures` statement of Erdős Problem 216
+
+The definitions below are copied from `google-deepmind/formal-conjectures` pull request
+#6775 (`FormalConjectures/ErdosProblems/216.lean`, head commit `44b9bbc3`) and from the file it
+uses, `FormalConjecturesForMathlib/Geometry/2d.lean` (`NonTrilinear`, `ConvexIndep`), with
+`Set.Triplewise` from `FormalConjecturesForMathlib/Data/Set/Triplewise.lean`. They are primed
+here because this repository depends only on Mathlib. The bodies are verbatim. The only
+change is that `NonTrilinear` (stated there for an arbitrary Euclidean affine space `P`) is
+specialised to `ℝ²`. The theorems `cardSet'_eq_empty` and `erdos_216'` are exactly the
+statements `Erdos216.erdos_216.variants.horton` and `Erdos216.erdos_216` of that PR (with
+`answer(False)` read as `False`). -/
+
+section FormalConjectures216
+
+local notation "ℝ²" => EuclideanSpace ℝ (Fin 2)
+
+/-- `Set.Triplewise` from `FormalConjecturesForMathlib/Data/Set/Triplewise.lean`:
+the ternary relation `r` holds for all *distinct* `x y z ∈ s`. -/
+def SetTriplewise' {α : Type*} (s : Set α) (r : α → α → α → Prop) : Prop :=
+  ∀ ⦃x⦄, x ∈ s → ∀ ⦃y⦄, y ∈ s → ∀ ⦃z⦄, z ∈ s → x ≠ y → y ≠ z → x ≠ z → r x y z
+
+/-- `EuclideanGeometry.NonTrilinear` from `FormalConjecturesForMathlib/Geometry/2d.lean`:
+no three points of `A` lie on the same line. -/
+def NonTrilinear' (A : Set ℝ²) : Prop :=
+  SetTriplewise' A (fun x y z ↦ ¬ Collinear ℝ {x, y, z})
+
+/-- `ConvexIndep` from `FormalConjecturesForMathlib/Geometry/2d.lean`. -/
+def ConvexIndep' (S : Set ℝ²) : Prop :=
+  ∀ a ∈ S, a ∉ convexHull ℝ (S \ {a})
+
+/-- `Erdos216.HasEmptyConvexNGon` from formal-conjectures PR #6775. -/
+def HasEmptyConvexNGon' (n : ℕ) (P : Set ℝ²) : Prop :=
+  ∃ S : Finset ℝ², S.card = n ∧ ↑S ⊆ P ∧ ConvexIndep' (S : Set ℝ²) ∧
+    ∀ p ∈ P, p ∉ interior (convexHull ℝ (S : Set ℝ²))
+
+/-- `Erdos216.cardSet` from formal-conjectures PR #6775. -/
+def cardSet' (k : ℕ) := { N | ∀ (pts : Finset ℝ²), pts.card = N → NonTrilinear' (pts : Set ℝ²) →
+    HasEmptyConvexNGon' k pts }
+
+/-- `Erdos216.g` from formal-conjectures PR #6775. -/
+noncomputable def g' (k : ℕ) : ℕ :=
+  sInf (cardSet' k)
+
+/-- **Horton's theorem**, formal-conjectures form (`Erdos216.erdos_216.variants.horton` in
+PR #6775): for `n ≥ 7` no `N` works, i.e. `g(n)` does not exist. -/
+theorem cardSet'_eq_empty : ∀ n ≥ 7, cardSet' n = ∅ := by
+  intro n hn
+  ext N
+  simp only [Set.mem_empty_iff_false, iff_false]
+  intro hN
+  obtain ⟨S, hcard, hgp, h⟩ := horton_euclidean N
+  obtain ⟨T, hTcard, hTS, hT, hempty⟩ := hN S hcard
+    (fun x hx y hy z hz hxy hyz hxz => hgp x hx y hy z hz hxy hxz hyz)
+  refine h n hn ⟨T, Finset.coe_subset.1 hTS, hTcard, fun p hp => ?_, fun p hp _ => hempty p hp⟩
+  rw [Finset.coe_erase]
+  exact hT p hp
+
+/-- Erdős Problem 216, formal-conjectures form (`Erdos216.erdos_216` in PR #6775, with
+`answer(False)`): it is not the case that `g(k)` exists for every `k ≥ 3`. -/
+theorem erdos_216' : (∀ k ≥ 3, (cardSet' k).Nonempty) ↔ False := by
+  refine iff_false_intro fun h => ?_
+  obtain ⟨N, hN⟩ := h 7 (by norm_num)
+  rw [cardSet'_eq_empty 7 le_rfl] at hN
+  exact hN
+
+/-- Equivalent negated form of `erdos_216'`. -/
+theorem not_forall_cardSet'_nonempty : ¬ ∀ k ≥ 3, (cardSet' k).Nonempty :=
+  erdos_216'.1
+
+/-- With the `sInf ∅ = 0` convention of PR #6775, `g' n = 0` for `n ≥ 7`. -/
+theorem g'_eq_zero (n : ℕ) (hn : 7 ≤ n) : g' n = 0 := by
+  rw [g', cardSet'_eq_empty n hn, Nat.sInf_empty]
+
+end FormalConjectures216
 
 end Horton
