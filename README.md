@@ -13,5 +13,6 @@ Proofs were produced with AI assistance (Claude Code) and checked by the Lean ke
 | `ErdosProofs/MO513215.lean` | MathOverflow 513215 | a_n = n(n+3)/2 has S(0)=11/9, S(1)=1 |
 | `ErdosProofs/Kourovka17_32.lean` | Kourovka 17.32 (Ionin–Semidetnov 2026) | Cayley–Hamilton analogue for F_n fails (n=2 witness) |
 | `ErdosProofs/SquareGraphDiameter.lean` | MathOverflow 509929 | graph u~v iff uv+1 square has diameter 3 |
+| `ErdosProofs/FerrisWheel.lean` | MathOverflow 515611 | 907200 is a Ferris wheel number (210 divisors at 210th roots of unity sum to 0) |
 
 Build: `lake exe cache get && lake build`.
