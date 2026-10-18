@@ -15,5 +15,6 @@ Proofs were produced with AI assistance (Claude Code) and checked by the Lean ke
 | `ErdosProofs/SquareGraphDiameter.lean` | MathOverflow 509929 | graph u~v iff uv+1 square has diameter 3 |
 | `ErdosProofs/FerrisWheel.lean` | MathOverflow 515611 | 907200 is a Ferris wheel number (210 divisors at 210th roots of unity sum to 0) |
 | `ErdosProofs/LcmHighlyAbundant.lean` | MathOverflow 501066 (Tao) | lcm(1..200000) is not highly abundant |
+| `ErdosProofs/Kourovka19_35.lean` | Kourovka 19.35 (Bergman / McCulloch 2026) | A4 has no subset factorization of sizes 2,3,2 |
 
 Build: `lake exe cache get && lake build`.

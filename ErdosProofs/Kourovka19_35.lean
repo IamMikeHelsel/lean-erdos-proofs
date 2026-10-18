@@ -129,7 +129,7 @@ lemma no_cover (a b₁ b₂ c : Fin 12) : ∃ k : Fin 12, ∀ x y z : Fin 12,
       mulT (mulT x y) z ≠ k := by
   have h := checkB_eq
   simp only [checkB, List.all_eq_true, List.any_eq_true, List.mem_range, Bool.not_eq_true',
-    List.contains_eq_false] at h
+    Bool.eq_false_iff, ne_eq, List.contains_iff_mem] at h
   obtain ⟨k, hk, hnot⟩ := h a.val a.isLt b₁.val b₁.isLt b₂.val b₂.isLt c.val c.isLt
   refine ⟨⟨k, hk⟩, fun x y z hx hy hz heq => ?_⟩
   have heq' : mulN (mulN x.val y.val) z.val = k := congrArg Fin.val heq
