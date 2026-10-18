@@ -4,3 +4,4 @@ import ErdosProofs.SquareGraphDiameter
 import ErdosProofs.FerrisWheel
 import ErdosProofs.LcmHighlyAbundant
 import ErdosProofs.Kourovka19_35
+import ErdosProofs.Horton
