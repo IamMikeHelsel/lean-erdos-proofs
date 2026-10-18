@@ -17,6 +17,7 @@ Proofs were produced with AI assistance (Claude Code) and checked by the Lean ke
 | `ErdosProofs/LcmHighlyAbundant.lean` | MathOverflow 501066 (Tao) | lcm(1..200000) is not highly abundant |
 | `ErdosProofs/Kourovka19_35.lean` | Kourovka 19.35 (Bergman / McCulloch 2026) | A4 has no subset factorization of sizes 2,3,2 |
 | [`Challenge.lean`](Challenge.lean) / [`Solution.lean`](Solution.lean) | Erdős Problem 216, k ≥ 7 (Horton 1983) | for every N a set of N points in general position with no empty convex k-gon, k ≥ 7 |
+| `ErdosProofs/Erdos609.lean` | Erdős Problem 609, small case (Cai 2026) | f(3) = 5: every 3-colouring of K_9 has a monochromatic C_3 or C_5, and some has no monochromatic C_3 |
 
 Build: `lake exe cache get && lake build`.
 

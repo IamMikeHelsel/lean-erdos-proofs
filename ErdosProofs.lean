@@ -7,3 +7,4 @@ public import ErdosProofs.FerrisWheel
 public import ErdosProofs.LcmHighlyAbundant
 public import ErdosProofs.Kourovka19_35
 public import ErdosProofs.Horton
+public import ErdosProofs.Erdos609
