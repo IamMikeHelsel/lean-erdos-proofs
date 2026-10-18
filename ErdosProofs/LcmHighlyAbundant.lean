@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # MathOverflow 501066: `lcm(1, …, n)` is not always highly abundant
@@ -36,6 +38,8 @@ explicit counterexample.)
 * The certificate for Tao's 38 primes (with `e p = 2` on the `p_j` and `e p = 0` on the `q_m`)
   is checked by `decide` on numbers with a few hundred digits.
 -/
+
+@[expose] public section
 
 namespace LcmHighlyAbundant
 

@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # The "`uv + 1` is a square" graph has diameter 3
@@ -31,6 +33,8 @@ but `u² < u (u + 2) < (u + 1)²`.
 * `SqGraph.ediam_eq : SqGraph.ediam = 3`
 * `SqGraph.diam_eq : SqGraph.diam = 3`
 -/
+
+@[expose] public section
 
 namespace SquareGraphDiameter
 

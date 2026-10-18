@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Kourovka Notebook Problem 17.32 has a negative answer
@@ -17,6 +19,8 @@ so `⟨w, φ(w)⟩ ≠ F₂`.
 
 This file formalizes that counterexample.
 -/
+
+@[expose] public section
 
 namespace Kourovka17_32
 

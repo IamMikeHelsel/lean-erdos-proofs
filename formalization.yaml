@@ -1,0 +1,214 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Horton's theorem: arbitrarily large planar point sets in general position with no empty convex 7-gon (Erdős Problem 216, k ≥ 7)"
+  description: |
+    A Lean 4 / Mathlib formalization of Horton's 1983 theorem: for every natural number N
+    there is a set of N points in the plane, in general position (no three collinear), that
+    contains no empty convex k-gon for any k ≥ 7, where an empty convex k-gon is a set of k of
+    the points in convex position whose convex hull has no other point of the set in its
+    interior. Consequently the Erdős–Szekeres-type number g(k) of Erdős Problem 216 (the least
+    n such that every n-point set in general position contains an empty convex k-gon) does not
+    exist for any k ≥ 7, which settles the negative half of that problem. The proof formalizes
+    Horton's recursive construction with explicit integer coordinates and his
+    no-open-4-cup/4-cap argument, then transfers the result to Mathlib's notions of
+    collinearity, convex hull and interior in ℝ × ℝ and in the Euclidean plane
+    EuclideanSpace ℝ (Fin 2). The result is also stated and proved verbatim in the form of the
+    formal-conjectures statement of Erdős Problem 216 (pull request #6775).
+
+    The Palomar entry (comparator.json) compares exactly the Horton theorems:
+    Horton.horton_euclidean, Horton.erdos_216_ge_seven, Horton.cardSet'_eq_empty and
+    Horton.erdos_216'. The same repository also contains six smaller, independent
+    kernel-checked results that are not part of this entry: the series value for
+    MathOverflow 513215, a counterexample to Kourovka Notebook problem 17.32 (a Cayley–Hamilton
+    analogue for free groups), diameter 3 of the graph on positive integers with u ~ v iff
+    uv + 1 is a square (MathOverflow 509929), a Ferris wheel number 907200 (MathOverflow
+    515611), Tao's counterexample showing lcm(1, ..., 200000) is not highly abundant
+    (MathOverflow 501066), and the negative answer to Kourovka Notebook problem 19.35 for the
+    alternating group A4.
+  authors: ["Mike Helsel"]
+  responsible_maintainers: ["Mike Helsel"]
+  license: "Apache-2.0"
+
+sources:
+  - title: "Sets with no empty convex 7-gons"
+    authors: ["J. D. Horton"]
+    id: "Canad. Math. Bull. 26 (1983), no. 4, 482–484"
+    type: "article"
+    location: "Main theorem and the construction of Horton sets"
+    relationship: "formalizes"
+    note: >-
+      The formalization follows Horton's recursive construction (even/odd halves, one lifted
+      far above the other) with explicit integer coordinates, and his argument that a Horton
+      set has no open 4-cup or 4-cap between its halves, as expounded in J. Matoušek,
+      Lectures on Discrete Geometry, Section 3.2.
+    author_endorsement: "not-contacted"
+  - title: "Erdős Problem #216"
+    contributors:
+      - name: "Paul Erdős"
+        role: "problem-proposer"
+      - name: "Thomas F. Bloom"
+        role: "maintainer of erdosproblems.com"
+    id: "https://www.erdosproblems.com/216"
+    type: "web post"
+    relationship: "background"
+    note: "Problem statement of g(k) and its known status; Horton's theorem answers the case k ≥ 7 negatively."
+    author_endorsement: "n/a"
+  - title: "Formal Verification of the Empty Hexagon Number"
+    authors: ["Bernardo Subercaseaux", "Wojciech Nawrocki", "James Gallicchio", "Cayden Codel", "Mario Carneiro", "Marijn J. H. Heule"]
+    id: "arXiv:2403.17370 (ITP 2024; Lean development EmptyHexagonLean, https://github.com/bsubercaseaux/EmptyHexagonLean)"
+    type: "article"
+    relationship: "background"
+    note: >-
+      The definitions of general position (no three collinear) and convex independence were
+      adapted from the EmptyHexagonLean formalization. Emptiness here forbids points only in
+      the interior of the convex hull (EmptyHexagonLean uses the closed hull); the closed-hull
+      variant is also proved (Horton.not_hasEmptyConvexKGon').
+    author_endorsement: "not-contacted"
+  - title: "formal-conjectures pull request #6775: Erdős Problem 216"
+    id: "https://github.com/google-deepmind/formal-conjectures/pull/6775 (head commit 44b9bbc3)"
+    type: "web post"
+    relationship: "other"
+    note: >-
+      Statement shape copied: the definitions NonTrilinear, ConvexIndep, HasEmptyConvexNGon,
+      cardSet and g (and Set.Triplewise) are copied verbatim into Challenge.lean with primed
+      names, NonTrilinear specialised to ℝ², and Horton.cardSet'_eq_empty / Horton.erdos_216'
+      are the PR's statements erdos_216.variants.horton and erdos_216 (answer(False) read as
+      False).
+    author_endorsement: "not-contacted"
+
+related_formalizations:
+  - id: "https://github.com/bsubercaseaux/EmptyHexagonLean"
+    relationship: "other"
+    note: "Proves g(6) = 30 in Lean; no code is imported, only the definitions of general and convex position were adapted."
+  - id: "https://github.com/google-deepmind/formal-conjectures/pull/6775"
+    relationship: "other"
+    note: "Statement-only formalization of Erdős Problem 216 (with sorry); this repository proves its Horton variant and its main statement (answer False) with the definitions copied verbatim."
+
+classification:
+  arxiv: ["math.CO", "math.MG"]
+  msc2020: ["52C10", "05D10"]
+
+status:
+  scope: >-
+    Complete formal proof of Horton's theorem (the case k ≥ 7 of Erdős Problem 216) from
+    Mathlib, with no literature dependencies. The positive cases (g(3), g(4), g(5) and the
+    existence of g(6)) are not formalized here. The repository additionally contains six
+    unrelated small results (see project.description) that are not compared by
+    comparator.json.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
+  main_results:
+    - declaration: "Horton.horton_euclidean"
+      file: "Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "comparator.json"
+      literature_dependencies: []
+    - declaration: "Horton.erdos_216_ge_seven"
+      file: "Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "comparator.json"
+      literature_dependencies: []
+    - declaration: "Horton.cardSet'_eq_empty"
+      file: "Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "comparator.json"
+      literature_dependencies: []
+    - declaration: "Horton.erdos_216'"
+      file: "Solution.lean"
+      sorry_count: 0
+      axioms: ["propext", "Classical.choice", "Quot.sound"]
+      comparator_config: "comparator.json"
+      literature_dependencies: []
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["claude-opus-5-5"]
+      framework: "Claude Code"
+      tool_setup: >-
+        An autonomous Claude Code subagent was given the problem statement, a sketch of
+        Horton's construction and the EmptyHexagonLean definitions, and iterated on the Lean
+        source with `lake env lean` (local Lean/Mathlib checks) until the file compiled with no
+        sorry. Orchestration (task decomposition, statement comparison against formal-conjectures
+        PR #6775, packaging) was done by claude-fable-5-1.
+      cost:
+        wall_time: "about 20 minutes for the proof"
+        spend_usd: "subscription-based usage"
+        hardware: "API-only, local Lean checks on an ARM64 workstation"
+      prompting_notes: "Statements and definitions were fixed first; the agent was asked for a sorry-free, native_decide-free proof using only standard axioms."
+  spend_usd: "subscription-based usage"
+  notes: >-
+    Mike Helsel directed the work, chose the problems and is responsible for the repository.
+    All proofs were machine-generated and checked by the Lean kernel; the Comparator entry was
+    additionally replayed by lean4lean, nanoda, con-leche and con-ron (`lake comparator --paranoid`).
+
+fidelity:
+  divergences: >-
+    (1) Emptiness: an empty convex k-gon is required to have no other point of the set in the
+    interior of its convex hull (Mathlib `interior (convexHull ℝ T)`). This is the weakest
+    emptiness condition, so the non-existence statements proved are the strongest form; for
+    point sets in general position it is equivalent to the closed-hull notion, which is also
+    proved (Horton.not_hasEmptyConvexKGon'). (2) General position means no three distinct
+    points are collinear (Mathlib `Collinear ℝ {p, q, r}`), the standard hypothesis of the
+    problem. (3) Convex position means no point lies in the convex hull of the remaining
+    points. (4) The plane is modelled both as ℝ × ℝ (erdos_216_ge_seven) and as
+    EuclideanSpace ℝ (Fin 2) (horton_euclidean, and the formal-conjectures statements);
+    the definitions are stated for an arbitrary real vector space. (5) The formal-conjectures
+    definitions are copied with primed names; NonTrilinear is specialised from an arbitrary
+    Euclidean affine space to ℝ², and `answer(False)` is read as `False`. (6) For exactly N
+    points the construction uses a prefix of a Horton set of size 2^N with explicit integer
+    coordinates.
+
+review:
+  status: "agent-reviewed"
+  reviewers: ["claude-fable-5-1 (orchestrating agent)", "second Claude Code agent (statement comparison)"]
+  notes: >-
+    Kernel-checked (Lean kernel; Comparator also replayed with lean4lean, nanoda, con-leche,
+    con-ron); axioms audited with #print axioms (only propext, Classical.choice, Quot.sound;
+    no native_decide); the definitions and statements were compared against formal-conjectures
+    PR #6775 by a second agent. No line-by-line human review of the proof has been done yet.
+
+alignment:
+  namespace: "Horton"
+  statements:
+    - source: "Horton 1983, main theorem (Euclidean plane): for every N, N points in general position with no empty convex 7-gon (hence none for any k ≥ 7)"
+      lean: "Horton.horton_euclidean"
+      module: "Challenge.lean / Solution.lean"
+      status: "proved"
+    - source: "Erdős Problem 216: g(k) does not exist for k ≥ 7"
+      lean: "Horton.erdos_216_ge_seven"
+      module: "Challenge.lean / Solution.lean"
+      status: "proved"
+    - source: "formal-conjectures PR #6775, Erdos216.erdos_216.variants.horton"
+      lean: "Horton.cardSet'_eq_empty"
+      module: "Challenge.lean / Solution.lean"
+      status: "proved"
+    - source: "formal-conjectures PR #6775, Erdos216.erdos_216 (answer False)"
+      lean: "Horton.erdos_216'"
+      module: "Challenge.lean / Solution.lean"
+      status: "proved"
+    - source: "General position (no three collinear)"
+      lean: "Horton.InGeneralPosition"
+      module: "Challenge.lean"
+      status: "definition"
+    - source: "Convex position (convex independence)"
+      lean: "Horton.ConvexPosition"
+      module: "Challenge.lean"
+      status: "definition"
+    - source: "Empty convex k-gon"
+      lean: "Horton.HasEmptyConvexKGon"
+      module: "Challenge.lean"
+      status: "definition"
+      note: "Interior-of-hull emptiness; closed-hull variant HasEmptyConvexKGon' handled in Solution.lean."
+    - source: "Horton's construction and the no-open-4-cup/4-cap lemma"
+      lean: "Horton.hortonSetInt, Horton.cup_cap, Horton.good_card, Horton.hortonSet_empty_le_six"
+      module: "Solution.lean"
+      status: "proved"
+
+acknowledgements: "Built on Mathlib. Definitions adapted from EmptyHexagonLean and formal-conjectures."

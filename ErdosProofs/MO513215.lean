@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # MathOverflow 513215: rational reciprocal sums before and after a unit shift
@@ -20,6 +22,8 @@ We formalise this in `ℝ`. Mathlib sequences are indexed from `0`, so the `n`-t
 MO sequence (`n ≥ 1`) is `a (n + 1)`. Since all terms are positive, `HasSum` here is the
 same as ordinary (absolute) convergence of the series to the stated value.
 -/
+
+@[expose] public section
 
 namespace MO513215
 

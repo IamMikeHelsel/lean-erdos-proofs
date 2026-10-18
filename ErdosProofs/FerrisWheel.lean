@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # MathOverflow 515611: Ferris wheel numbers exist
@@ -22,6 +24,8 @@ position with residue `p - 1 mod p`; this is the Rédei–de Bruijn–Schoenberg
 vanishing sums of 210-th roots of unity.) The bijection with `Nat.divisors 907200` follows from
 `wheel.Nodup`, each entry dividing `907200`, and `d(907200) = 7·5·3·2 = 210`.
 -/
+
+@[expose] public section
 
 open Complex Finset Real
 

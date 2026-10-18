@@ -1,4 +1,6 @@
-import Mathlib
+module
+
+public import Mathlib
 
 /-!
 # Kourovka Notebook Problem 19.35 has a negative answer
@@ -30,6 +32,8 @@ groups*, arXiv:2607.20569 (2026), writes up Bergman's argument and gives counter
    some element is not among the twelve products `x * y * z` with `x ∈ {1, a}`,
    `y ∈ {1, b₁, b₂}`, `z ∈ {1, c}`.
 -/
+
+@[expose] public section
 
 namespace Kourovka19_35
 

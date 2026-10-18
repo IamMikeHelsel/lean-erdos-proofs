@@ -8,7 +8,13 @@ relaxedAutoImplicit = false
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.33.1"
+rev = "v4.35.0"
 
 [[lean_lib]]
 name = "ErdosProofs"
+
+[[lean_lib]]
+name = "Challenge"
+
+[[lean_lib]]
+name = "Solution"
